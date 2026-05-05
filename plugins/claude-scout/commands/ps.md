@@ -1,0 +1,10 @@
+---
+description: Show local Scout-launched agent processes and session state
+argument-hint: '[scout ps args]'
+disable-model-invocation: true
+allowed-tools: Bash(node:*)
+---
+
+!`node "${CLAUDE_PLUGIN_ROOT}/scripts/scout-companion.mjs" ps "$ARGUMENTS"`
+
+Present the command output as-is. Preserve process/session ids and state labels exactly.

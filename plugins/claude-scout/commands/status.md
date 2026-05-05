@@ -1,0 +1,10 @@
+---
+description: Show Scout readiness, current sender, routable agents, and recent activity
+argument-hint: ''
+disable-model-invocation: true
+allowed-tools: Bash(node:*)
+---
+
+!`node "${CLAUDE_PLUGIN_ROOT}/scripts/scout-companion.mjs" status "$ARGUMENTS"`
+
+Present the command output as a compact status view. Do not invent unavailable state.

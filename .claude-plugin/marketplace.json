@@ -7,8 +7,8 @@
   },
   "plugins": [
     {
-      "name": "claude-scout",
-      "description": "Push broker-routed Scout messages into a running Claude Code session and reply through Scout.",
+      "name": "scout",
+      "description": "Add /scout:* commands and push broker-routed Scout messages into a running Claude Code session.",
       "category": "productivity",
       "source": "./plugins/claude-scout",
       "homepage": "https://github.com/openscout/claude-scout",

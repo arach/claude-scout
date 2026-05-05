@@ -1,0 +1,10 @@
+---
+description: Ask a Scout agent to do owned work or return a concrete answer
+argument-hint: '(--to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]'
+disable-model-invocation: true
+allowed-tools: Bash(node:*)
+---
+
+!`node "${CLAUDE_PLUGIN_ROOT}/scripts/scout-companion.mjs" ask "$ARGUMENTS"`
+
+Present the command output as-is. Preserve flight ids, refs, target labels, and the returned answer exactly.

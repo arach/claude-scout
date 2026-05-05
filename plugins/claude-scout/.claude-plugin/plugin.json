@@ -1,6 +1,7 @@
 {
-  "name": "claude-scout",
-  "description": "Scout channel for Claude Code. Pushes broker-routed Scout messages into a running Claude Code session and lets Claude reply through Scout.",
+  "name": "scout",
+  "version": "0.1.0",
+  "description": "Scout integration for Claude Code. Adds /scout:* commands and a channel that pushes broker-routed Scout messages into a running Claude session.",
   "author": {
     "name": "OpenScout"
   },
@@ -12,6 +13,7 @@
     "claude-code",
     "channel",
     "mcp",
+    "commands",
     "agents"
   ],
   "channels": [

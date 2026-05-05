@@ -1,10 +1,13 @@
 # Claude Scout
 
 This repository contains the Claude Code plugin marketplace for OpenScout's Claude integration.
+The repository is named `claude-scout`; the Claude-facing plugin is named
+`scout` so its commands are exposed as `/scout:*`.
 
 ## Included Plugins
 
-- `claude-scout`: a Claude Code channel plugin that launches `scout channel`.
+- `scout`: a Claude Code plugin that adds `/scout:*` commands and launches the
+  `scout channel` MCP server for ambient broker push.
 
 ## Install Locally
 
@@ -12,13 +15,13 @@ From Claude Code:
 
 ```text
 /plugin marketplace add /Users/art/dev/claude-scout
-/plugin install claude-scout@openscout
+/plugin install scout@openscout
 ```
 
 Then start Claude Code with the channel enabled:
 
 ```bash
-claude --dangerously-load-development-channels plugin:claude-scout@openscout
+claude --dangerously-load-development-channels plugin:scout@openscout
 ```
 
 ## Install From GitHub
@@ -27,7 +30,7 @@ Once published:
 
 ```text
 /plugin marketplace add openscout/claude-scout
-/plugin install claude-scout@openscout
+/plugin install scout@openscout
 ```
 
 ## Validate
@@ -39,4 +42,7 @@ claude plugin validate plugins/claude-scout
 
 ## Notes
 
-Claude Code copies installed plugins into its cache, so this plugin does not reference files outside its own directory. It shells out to `scout channel`, using either a local `scout` executable or `bunx @openscout/scout`.
+Claude Code copies installed plugins into its cache, so this plugin does not
+reference files outside its own directory. It shells out to the local Scout CLI,
+using either `scout`, `bunx @openscout/scout`, or an explicit
+`OPENSCOUT_CLI_BIN`.

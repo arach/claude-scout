@@ -1,13 +1,45 @@
 # Claude Scout
 
-Claude Scout packages OpenScout's Claude Code channel server as an installable Claude plugin.
+Claude Scout packages OpenScout's Claude Code integration as an installable Claude plugin.
 
-It launches `scout channel`, which:
+The repository and plugin directory are named `claude-scout`. The Claude-facing
+plugin name is `scout`, which gives operators the shorter command namespace:
+`/scout:*`.
+
+It provides two surfaces:
+
+- slash commands for precise operator actions such as `/scout:ask`,
+  `/scout:send`, `/scout:up`, and `/scout:status`
+- a Claude Code channel for ambient broker-routed push, mentions, group updates,
+  and replies
+
+The channel launches `scout channel`, which:
 
 - subscribes to the local Scout broker event stream
 - pushes incoming Scout messages into the running Claude Code session with `notifications/claude/channel`
 - exposes `scout_reply` for replies to incoming Scout messages
 - exposes `scout_send` for new Scout messages from the Claude session
+
+## Commands
+
+The plugin currently exposes:
+
+- `/scout:setup` - run `scout setup`
+- `/scout:doctor` - check broker, service, and support paths
+- `/scout:status` - show doctor, sender, agents, and recent activity
+- `/scout:whoami` - show the current Scout sender
+- `/scout:who` and `/scout:agents` - list routable agents
+- `/scout:latest` - show recent broker activity
+- `/scout:send` - send a tell, FYI, status update, or wake message
+- `/scout:ask` - ask an agent for owned work or a concrete answer
+- `/scout:broadcast` - broadcast to `channel.shared`
+- `/scout:up` - start or revive a Scout agent
+- `/scout:ps` - show Scout-launched agent process/session state
+- `/scout:open` - open the Scout web UI
+
+The commands are thin wrappers around the Scout CLI. They preserve Scout's
+structured routing model: use `--to` for DMs, `--channel` for group threads,
+`--ref` for concrete session continuity, and `broadcast` only for shared FYIs.
 
 ## Status
 
@@ -34,20 +66,20 @@ Add the marketplace and install the plugin:
 
 ```text
 /plugin marketplace add openscout/claude-scout
-/plugin install claude-scout@openscout
+/plugin install scout@openscout
 ```
 
 During the Claude Code Channels research preview, launch Claude Code with the development-channel flag unless the plugin is on an approved allowlist:
 
 ```bash
-claude --dangerously-load-development-channels plugin:claude-scout@openscout
+claude --dangerously-load-development-channels plugin:scout@openscout
 ```
 
 For local path testing from this repository:
 
 ```text
 /plugin marketplace add /absolute/path/to/claude-scout
-/plugin install claude-scout@openscout
+/plugin install scout@openscout
 ```
 
 For direct server testing without plugin packaging, use the existing Scout command:
@@ -73,11 +105,15 @@ with an MCP config entry equivalent to:
 
 The wrapper prefers a locally installed `scout` CLI. Set these environment variables to override behavior:
 
+- `OPENSCOUT_CLI_BIN`: absolute path to a Scout executable for slash commands
 - `OPENSCOUT_CHANNEL_BIN`: absolute path to a Scout executable
 - `OPENSCOUT_SETUP_CWD`: default Scout context root for agent identity resolution
 - `OPENSCOUT_BROKER_URL`: explicit broker URL when the default broker URL is not correct
 
-If `OPENSCOUT_SETUP_CWD` is unset, the wrapper defaults it to `$HOME` so the plugin does not accidentally use the plugin directory as its Scout context.
+For the channel process, if `OPENSCOUT_SETUP_CWD` is unset, the wrapper
+defaults it to `$HOME` so the plugin does not accidentally use the plugin
+directory as its Scout context. Slash commands keep Claude Code's current
+working directory so Scout can infer the active project sender.
 
 ## Current Limits
 
