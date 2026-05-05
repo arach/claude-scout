@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "commands": [
+    {
+      "name": "setup",
+      "description": "Set up or refresh the local Scout installation used by Claude Code",
+      "argumentHint": "[scout setup args]",
+      "usageSuffix": "[scout setup args]",
+      "readmeSummary": "run `scout setup`",
+      "scoutArgs": ["setup"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve any follow-up commands exactly."
+      ]
+    },
+    {
+      "name": "doctor",
+      "description": "Run Scout operational checks for the local broker, service, and support paths",
+      "argumentHint": "[scout doctor args]",
+      "usageSuffix": "[scout doctor args]",
+      "readmeSummary": "check broker, service, and support paths",
+      "scoutArgs": ["doctor"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve any error details and follow-up commands exactly."
+      ]
+    },
+    {
+      "name": "status",
+      "description": "Show Scout readiness, current sender, routable agents, and recent activity",
+      "argumentHint": "",
+      "usageSuffix": "",
+      "readmeSummary": "show doctor, sender, agents, and recent activity",
+      "kind": "status",
+      "statusSections": [
+        { "title": "Scout Doctor", "scoutArgs": ["doctor"] },
+        { "title": "Current Sender", "scoutArgs": ["whoami"] },
+        { "title": "Agents", "scoutArgs": ["who"] },
+        { "title": "Latest Activity", "scoutArgs": ["latest"] }
+      ],
+      "postInstructions": [
+        "Present the command output as a compact status view. Do not invent unavailable state."
+      ]
+    },
+    {
+      "name": "whoami",
+      "description": "Show which Scout identity this Claude Code session will speak as",
+      "argumentHint": "[scout whoami args]",
+      "usageSuffix": "[scout whoami args]",
+      "readmeSummary": "show the current Scout sender",
+      "scoutArgs": ["whoami"],
+      "postInstructions": [
+        "Present the command output as-is."
+      ]
+    },
+    {
+      "name": "who",
+      "description": "List routable Scout agents for the current project context",
+      "argumentHint": "[scout who args]",
+      "usageSuffix": "[scout who args]",
+      "readmeSummary": "list routable agents",
+      "scoutArgs": ["who"],
+      "postInstructions": [
+        "Present the command output as-is. If multiple agents share a short name, keep the fully-qualified handles visible."
+      ]
+    },
+    {
+      "name": "agents",
+      "description": "List available Scout agents and their routable handles",
+      "argumentHint": "[scout who args]",
+      "usageSuffix": "[scout who args]",
+      "readmeSummary": "list available agents and their routable handles",
+      "scoutArgs": ["who"],
+      "postInstructions": [
+        "Present the command output as-is. Prefer fully-qualified handles when the output shows ambiguity."
+      ]
+    },
+    {
+      "name": "latest",
+      "description": "Show recent Scout messages, flights, and broker activity",
+      "argumentHint": "[scout latest args]",
+      "usageSuffix": "[scout latest args]",
+      "readmeSummary": "show recent broker activity",
+      "scoutArgs": ["latest"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve ids and refs exactly."
+      ]
+    },
+    {
+      "name": "send",
+      "description": "Send a Scout tell, status update, FYI, or wake message without waiting for a reply",
+      "argumentHint": "[--to <agent> | --ref <ref> | --channel <name>] [--as <sender>] [--wake] [--message-file <path> | message]",
+      "usageSuffix": "[--to <agent> | --ref <ref> | --channel <name>] [--as <sender>] [--wake] [--message-file <path> | message]",
+      "readmeSummary": "send a tell, FYI, status update, or wake message",
+      "scoutArgs": ["send"],
+      "postInstructions": [
+        "Present the command output as-is. Do not reinterpret message body mentions as routing if the user passed `--to`, `--ref`, or `--channel`."
+      ]
+    },
+    {
+      "name": "ask",
+      "description": "Ask a Scout agent to do owned work or return a concrete answer",
+      "argumentHint": "(--to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]",
+      "usageSuffix": "(--to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]",
+      "readmeSummary": "ask an agent for owned work or a concrete answer",
+      "scoutArgs": ["ask"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve flight ids, refs, target labels, and the returned answer exactly."
+      ]
+    },
+    {
+      "name": "broadcast",
+      "description": "Broadcast an explicit Scout announcement to channel.shared",
+      "argumentHint": "[--as <sender>] [--message-file <path> | message]",
+      "usageSuffix": "[--as <sender>] [--message-file <path> | message]",
+      "readmeSummary": "broadcast to `channel.shared`",
+      "scoutArgs": ["broadcast"],
+      "postInstructions": [
+        "Present the command output as-is. Use this command only for messages genuinely intended for everyone."
+      ]
+    },
+    {
+      "name": "up",
+      "description": "Start or revive a Scout agent by name, handle, or project path",
+      "argumentHint": "<name|path> [--name <alias>] [--harness <claude|codex>] [--model <model>] [--reasoning-effort <effort>]",
+      "usageSuffix": "<name|path> [--name <alias>] [--harness <claude|codex>] [--model <model>] [--reasoning-effort <effort>]",
+      "readmeSummary": "start or revive a Scout agent",
+      "scoutArgs": ["up"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve any resolved agent identity or follow-up command exactly."
+      ]
+    },
+    {
+      "name": "ps",
+      "description": "Show local Scout-launched agent processes and session state",
+      "argumentHint": "[scout ps args]",
+      "usageSuffix": "[scout ps args]",
+      "readmeSummary": "show Scout-launched agent process/session state",
+      "scoutArgs": ["ps"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve process/session ids and state labels exactly."
+      ]
+    },
+    {
+      "name": "open",
+      "description": "Open the Scout web UI for the current local broker",
+      "argumentHint": "[scout server open args]",
+      "usageSuffix": "[scout server open args]",
+      "readmeSummary": "open the Scout web UI",
+      "scoutArgs": ["server", "open"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve the opened URL when Scout prints one."
+      ]
+    }
+  ]
+}

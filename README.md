@@ -36,6 +36,7 @@ Once published:
 ## Validate
 
 ```bash
+node plugins/claude-scout/scripts/generate-commands.mjs --check
 claude plugin validate .
 claude plugin validate plugins/claude-scout
 ```

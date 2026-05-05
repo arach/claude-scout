@@ -5,38 +5,31 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
-const SIMPLE_COMMANDS = new Map([
-  ["setup", ["setup"]],
-  ["doctor", ["doctor"]],
-  ["whoami", ["whoami"]],
-  ["who", ["who"]],
-  ["agents", ["who"]],
-  ["latest", ["latest"]],
-  ["send", ["send"]],
-  ["ask", ["ask"]],
-  ["broadcast", ["broadcast"]],
-  ["up", ["up"]],
-  ["ps", ["ps"]],
-  ["open", ["server", "open"]],
-]);
+const PLUGIN_ROOT = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
+const COMMAND_SPEC_PATH = path.join(PLUGIN_ROOT, "commands.scout.json");
+
+function loadCommandSpec() {
+  const raw = fs.readFileSync(COMMAND_SPEC_PATH, "utf8");
+  const spec = JSON.parse(raw);
+  if (!spec || spec.version !== 1 || !Array.isArray(spec.commands)) {
+    throw new Error("commands.scout.json must have version: 1 and a commands array");
+  }
+  return spec.commands;
+}
+
+const COMMANDS = loadCommandSpec();
+const COMMANDS_BY_NAME = new Map(COMMANDS.map((command) => [command.name, command]));
 
 function printUsage() {
   console.log(
     [
       "Usage:",
-      "  node scripts/scout-companion.mjs setup [scout setup args]",
-      "  node scripts/scout-companion.mjs doctor [scout doctor args]",
-      "  node scripts/scout-companion.mjs status",
-      "  node scripts/scout-companion.mjs whoami [args]",
-      "  node scripts/scout-companion.mjs who|agents [args]",
-      "  node scripts/scout-companion.mjs latest [args]",
-      "  node scripts/scout-companion.mjs send [scout send args]",
-      "  node scripts/scout-companion.mjs ask [scout ask args]",
-      "  node scripts/scout-companion.mjs broadcast [scout broadcast args]",
-      "  node scripts/scout-companion.mjs up [scout up args]",
-      "  node scripts/scout-companion.mjs ps [scout ps args]",
-      "  node scripts/scout-companion.mjs open [scout server open args]",
+      ...COMMANDS.map((command) => {
+        const suffix = command.usageSuffix ? ` ${command.usageSuffix}` : "";
+        return `  node scripts/scout-companion.mjs ${command.name}${suffix}`;
+      }),
       "",
       "Set OPENSCOUT_CLI_BIN to an explicit Scout executable if `scout` is not on PATH.",
     ].join("\n"),
@@ -193,21 +186,16 @@ function printSection(title) {
   console.log(`## ${title}`);
 }
 
-function runStatus() {
+function runStatus(command) {
   let status = 0;
 
-  const runSection = (title, args) => {
-    printSection(title);
-    const sectionStatus = runScout(args);
+  for (const section of command.statusSections ?? []) {
+    printSection(section.title);
+    const sectionStatus = runScout(section.scoutArgs);
     if (status === 0 && sectionStatus !== 0) {
       status = sectionStatus;
     }
-  };
-
-  runSection("Scout Doctor", ["doctor"]);
-  runSection("Current Sender", ["whoami"]);
-  runSection("Agents", ["who"]);
-  runSection("Latest Activity", ["latest"]);
+  }
 
   return status;
 }
@@ -227,18 +215,18 @@ async function main() {
     return 0;
   }
 
-  if (normalizedCommand === "status") {
-    return runStatus();
-  }
-
-  const scoutCommand = SIMPLE_COMMANDS.get(normalizedCommand);
-  if (!scoutCommand) {
+  const commandDefinition = COMMANDS_BY_NAME.get(normalizedCommand);
+  if (!commandDefinition) {
     console.error(`Unknown scout companion command: ${normalizedCommand}`);
     printUsage();
     return 2;
   }
 
-  return runScout([...scoutCommand, ...args]);
+  if (commandDefinition.kind === "status") {
+    return runStatus(commandDefinition);
+  }
+
+  return runScout([...commandDefinition.scoutArgs, ...args]);
 }
 
 const exitCode = await main();
