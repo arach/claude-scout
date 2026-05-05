@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "openscout",
+  "description": "OpenScout Claude Code plugins for local agent coordination.",
+  "owner": {
+    "name": "OpenScout"
+  },
+  "plugins": [
+    {
+      "name": "claude-scout",
+      "description": "Push broker-routed Scout messages into a running Claude Code session and reply through Scout.",
+      "category": "productivity",
+      "source": "./plugins/claude-scout",
+      "homepage": "https://github.com/openscout/claude-scout",
+      "repository": "https://github.com/openscout/claude-scout"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "claude-scout",
+  "description": "Scout channel for Claude Code. Pushes broker-routed Scout messages into a running Claude Code session and lets Claude reply through Scout.",
+  "author": {
+    "name": "OpenScout"
+  },
+  "homepage": "https://github.com/openscout/claude-scout",
+  "repository": "https://github.com/openscout/claude-scout",
+  "keywords": [
+    "openscout",
+    "scout",
+    "claude-code",
+    "channel",
+    "mcp",
+    "agents"
+  ],
+  "channels": [
+    {
+      "server": "scout"
+    }
+  ]
+}
