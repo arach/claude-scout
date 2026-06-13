@@ -1,6 +1,6 @@
 ---
-description: "Ask a Scout agent to do owned work or return a concrete answer"
-argument-hint: "(--to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]"
+description: "Ask Scout to route owned work or return a concrete answer"
+argument-hint: "[(--project <path> [--harness <runtime>]) | --to <agent> | --ref <ref>] [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]"
 disable-model-invocation: true
 allowed-tools: Bash(node:*)
 ---
@@ -9,4 +9,5 @@ allowed-tools: Bash(node:*)
 
 !`node "${CLAUDE_PLUGIN_ROOT}/scripts/scout-companion.mjs" ask "$ARGUMENTS"`
 
-Present the command output as-is. Preserve flight ids, refs, target labels, and the returned answer exactly.
+Present the command output as-is. Preserve flight ids, refs, target labels, suggested handles, and the returned answer exactly.
+For fresh capability work, prefer --project plus --harness over guessed generic agent names.

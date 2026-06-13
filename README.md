@@ -13,6 +13,10 @@ Repository: <https://github.com/arach/claude-scout>
 - `scout`: a Claude Code plugin that adds `/scout:*` commands and launches the
   `scout channel` MCP server for ambient broker push.
 
+## Routing model
+
+Capability-first routing is the default for fresh work: `/scout:ask --project /path/to/repo --harness claude "..."` lets the broker choose or create the worker. Use returned refs/ids for follow-up, and pin/name a sibling only after the route is known good. Do not guess generic names such as `claude.main`.
+
 ## Install Locally
 
 From Claude Code:

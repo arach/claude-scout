@@ -33,7 +33,7 @@ The plugin currently exposes:
 - `/scout:agents` - list available agents and their routable handles
 - `/scout:latest` - show recent broker activity
 - `/scout:send` - send a tell, FYI, status update, or wake message
-- `/scout:ask` - ask an agent for owned work or a concrete answer
+- `/scout:ask` - ask by project/capability, ref, or known agent
 - `/scout:broadcast` - broadcast to `channel.shared`
 - `/scout:up` - start or revive a Scout agent
 - `/scout:ps` - show Scout-launched agent process/session state
@@ -41,8 +41,12 @@ The plugin currently exposes:
 <!-- scout-commands:end -->
 
 The commands are thin wrappers around the Scout CLI. They preserve Scout's
-structured routing model: use `--to` for DMs, `--channel` for group threads,
-`--ref` for concrete session continuity, and `broadcast` only for shared FYIs.
+structured routing model: use `--project <path> --harness <runtime>` for fresh
+capability work when no exact worker is known, `--to` for DMs to a known target,
+`--channel` for group threads, `--ref` for concrete continuity, and `broadcast`
+only for shared FYIs. Do not guess generic agent names such as `claude.main`;
+let the broker route and then continue with the returned ref/ids/suggested
+handle.
 The command markdown and the list above are generated from
 `commands.scout.json`; update that file and run
 `node scripts/generate-commands.mjs --write`.
