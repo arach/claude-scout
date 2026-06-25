@@ -85,6 +85,28 @@
       ]
     },
     {
+      "name": "inbox",
+      "description": "Show recent direct or addressed Scout messages for the current sender",
+      "argumentHint": "[scout inbox args]",
+      "usageSuffix": "[scout inbox args]",
+      "readmeSummary": "show recent messages addressed to you",
+      "scoutArgs": ["inbox"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve conversation and message ids exactly."
+      ]
+    },
+    {
+      "name": "channel",
+      "description": "Show recent Scout messages in a named channel",
+      "argumentHint": "[channel] --latest <count> [scout channel args]",
+      "usageSuffix": "[channel] --latest <count> [scout channel args]",
+      "readmeSummary": "show recent messages in a named channel",
+      "scoutArgs": ["channel"],
+      "postInstructions": [
+        "Present the command output as-is. Preserve conversation and message ids exactly."
+      ]
+    },
+    {
       "name": "send",
       "description": "Send a Scout tell, status update, FYI, or wake message without waiting for a reply",
       "argumentHint": "[--to <agent> | --ref <ref> | --channel <name>] [--as <sender>] [--wake] [--message-file <path> | message]",
@@ -97,13 +119,16 @@
     },
     {
       "name": "ask",
-      "description": "Ask a Scout agent to do owned work or return a concrete answer",
-      "argumentHint": "(--to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]",
-      "usageSuffix": "(--to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]",
-      "readmeSummary": "ask an agent for owned work or a concrete answer",
+      "description": "Ask a Scout agent to own work and return durable flight info",
+      "argumentHint": "(--project <path> [--harness <claude|codex>] | --to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]",
+      "usageSuffix": "(--project <path> [--harness <claude|codex>] | --to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]",
+      "readmeSummary": "ask an agent to own work and return durable flight info",
       "scoutArgs": ["ask"],
       "postInstructions": [
-        "Present the command output as-is. Preserve flight ids, refs, target labels, and the returned answer exactly."
+        "Present the command output as-is. Treat it as a durable broker receipt and flight record, not as a promise that the final answer has already arrived.",
+        "For fresh capability work, prefer `--project <path>` with optional `--harness <claude|codex>` over guessing a generic agent label. Use `--to` for a known target and `--ref` for returned continuity handles.",
+        "Preserve flight ids, refs, target labels, and acknowledgement or completion messages exactly.",
+        "Expect the target acknowledgement to appear quickly in the same Scout conversation. Expect completion or the final answer later in the same conversation, via notifications, or by polling/waiting according to the selected reply mode."
       ]
     },
     {

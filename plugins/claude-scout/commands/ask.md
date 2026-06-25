@@ -1,6 +1,6 @@
 ---
-description: "Ask a Scout agent to do owned work or return a concrete answer"
-argument-hint: "(--to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]"
+description: "Ask a Scout agent to own work and return durable flight info"
+argument-hint: "(--project <path> [--harness <claude|codex>] | --to <agent> | --ref <ref>) [--as <sender>] [--channel <name>] [--timeout <seconds>] [--prompt-file <path> | request]"
 disable-model-invocation: true
 allowed-tools: Bash(node:*)
 ---
@@ -9,4 +9,7 @@ allowed-tools: Bash(node:*)
 
 !`node "${CLAUDE_PLUGIN_ROOT}/scripts/scout-companion.mjs" ask "$ARGUMENTS"`
 
-Present the command output as-is. Preserve flight ids, refs, target labels, and the returned answer exactly.
+Present the command output as-is. Treat it as a durable broker receipt and flight record, not as a promise that the final answer has already arrived.
+For fresh capability work, prefer `--project <path>` with optional `--harness <claude|codex>` over guessing a generic agent label. Use `--to` for a known target and `--ref` for returned continuity handles.
+Preserve flight ids, refs, target labels, and acknowledgement or completion messages exactly.
+Expect the target acknowledgement to appear quickly in the same Scout conversation. Expect completion or the final answer later in the same conversation, via notifications, or by polling/waiting according to the selected reply mode.

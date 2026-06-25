@@ -1,7 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-if [[ -z "${OPENSCOUT_SETUP_CWD:-}" && -n "${HOME:-}" ]]; then
+if [[ -z "${OPENSCOUT_SETUP_CWD:-}" && -n "${CLAUDE_PROJECT_DIR:-}" ]]; then
+  export OPENSCOUT_SETUP_CWD="${CLAUDE_PROJECT_DIR}"
+elif [[ -z "${OPENSCOUT_SETUP_CWD:-}" && -n "${PWD:-}" ]]; then
+  export OPENSCOUT_SETUP_CWD="${PWD}"
+elif [[ -z "${OPENSCOUT_SETUP_CWD:-}" && -n "${HOME:-}" ]]; then
   export OPENSCOUT_SETUP_CWD="${HOME}"
 fi
 

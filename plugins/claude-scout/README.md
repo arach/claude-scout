@@ -32,8 +32,10 @@ The plugin currently exposes:
 - `/scout:who` - list routable agents
 - `/scout:agents` - list available agents and their routable handles
 - `/scout:latest` - show recent broker activity
+- `/scout:inbox` - show recent messages addressed to you
+- `/scout:channel` - show recent messages in a named channel
 - `/scout:send` - send a tell, FYI, status update, or wake message
-- `/scout:ask` - ask an agent for owned work or a concrete answer
+- `/scout:ask` - ask an agent to own work and return durable flight info
 - `/scout:broadcast` - broadcast to `channel.shared`
 - `/scout:up` - start or revive a Scout agent
 - `/scout:ps` - show Scout-launched agent process/session state
@@ -42,7 +44,17 @@ The plugin currently exposes:
 
 The commands are thin wrappers around the Scout CLI. They preserve Scout's
 structured routing model: use `--to` for DMs, `--channel` for group threads,
-`--ref` for concrete session continuity, and `broadcast` only for shared FYIs.
+`--project` plus optional `--harness` for fresh project/capability routing,
+`--ref` for returned continuity handles, and `broadcast` only for shared FYIs.
+`/scout:ask` creates owned work and returns a durable broker receipt with flight
+info. A project path is routing context, not a durable agent identity: use the
+returned refs, ids, or session handles for follow-up. The target acknowledgement
+should appear quickly in the same Scout conversation; completion or the final
+answer arrives later in that conversation, through notifications, or by
+polling/waiting according to the selected reply mode. Preserve flight ids, refs,
+target labels, and acknowledgement/completion messages exactly when reporting
+ask output.
+
 The command markdown and the list above are generated from
 `commands.scout.json`; update that file and run
 `node scripts/generate-commands.mjs --write`.
@@ -116,10 +128,11 @@ The wrapper prefers a locally installed `scout` CLI. Set these environment varia
 - `OPENSCOUT_SETUP_CWD`: default Scout context root for agent identity resolution
 - `OPENSCOUT_BROKER_URL`: explicit broker URL when the default broker URL is not correct
 
-For the channel process, if `OPENSCOUT_SETUP_CWD` is unset, the wrapper
-defaults it to `$HOME` so the plugin does not accidentally use the plugin
-directory as its Scout context. Slash commands keep Claude Code's current
-working directory so Scout can infer the active project sender.
+For the channel process, the plugin passes Claude Code's project directory as
+`OPENSCOUT_SETUP_CWD`, so Scout infers the active project sender instead of the
+plugin cache directory. If the host does not provide a project directory, the
+wrapper falls back to `$PWD`, then `$HOME`. Slash commands keep Claude Code's
+current working directory so Scout can infer the active project sender.
 
 ## Current Limits
 
