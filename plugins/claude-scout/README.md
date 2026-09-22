@@ -140,11 +140,13 @@ current working directory so Scout can infer the active project sender.
 - Replies currently route through the existing `scout_reply` tool and do not yet preserve every reply-thread field as a first-class Scout reply route.
 - Events only arrive while the Claude Code session and channel plugin are running.
 
-## Official Marketplace Submission
+## Marketplace submission
 
-Claude's plugin docs say official marketplace submissions go through the in-app submission forms:
+Anthropic's public submission forms are for its reviewed community marketplace:
 
-- Claude.ai: `claude.ai/settings/plugins/submit`
-- Console: `platform.claude.com/plugins/submit`
+- [Claude Console](https://platform.claude.com/plugins/submit) for individual authors.
+- [Claude organization submission](https://claude.ai/admin-settings/directory/submissions/plugins/new) for eligible organizations.
 
-Channel plugins also require channel review/allowlisting during the research preview.
+The separately curated official marketplace has no application process. A community listing does not imply official endorsement or channel allowlisting. See [Anthropic's submission documentation](https://code.claude.com/docs/en/plugins#submit-your-plugin-to-the-community-marketplace).
+
+Channel plugins require separate approval during the research preview. Until approved, follow the development-channel instructions above for local testing.

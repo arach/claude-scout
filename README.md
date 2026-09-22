@@ -13,12 +13,22 @@ Repository: <https://github.com/arach/claude-scout>
 - `scout`: a Claude Code plugin that adds `/scout:*` commands and launches the
   `scout channel` MCP server for ambient broker push.
 
+## Routing model
+
+Capability-first routing is the default for fresh work: `/scout:ask --project /path/to/repo --harness claude "..."` lets the broker choose or create the worker. Use returned refs/ids for follow-up, and pin/name a sibling only after the route is known good. Do not guess generic names such as `claude.main`.
+
+## Prerequisites
+
+Install and configure OpenScout with a running local broker before using this plugin. Bun 1.3 or later is required by OpenScout. See the [plugin setup and limitations](plugins/claude-scout/README.md).
+
+This is an experimental local developer integration. It supports coordination between configured Scout agents; it does not bundle small models or vision models. Channel notifications require Claude channel approval or development-channel loading.
+
 ## Install Locally
 
 From Claude Code:
 
 ```text
-/plugin marketplace add /Users/art/dev/claude-scout
+/plugin marketplace add /absolute/path/to/claude-scout
 /plugin install scout@openscout
 ```
 
@@ -29,8 +39,6 @@ claude --dangerously-load-development-channels plugin:scout@openscout
 ```
 
 ## Install From GitHub
-
-Once published:
 
 ```text
 /plugin marketplace add arach/claude-scout
